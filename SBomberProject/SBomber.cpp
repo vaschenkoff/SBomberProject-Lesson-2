@@ -9,6 +9,7 @@
 #include "Tank.h"
 #include "House.h"
 #include "Screensingletone.h"
+#include "TankAdapter.h"
 
 using namespace std;
 
@@ -58,6 +59,11 @@ SBomber::SBomber()
     pTank->SetWidth(13);
     pTank->SetPos(50, groundY - 1);
     vecStaticObj.push_back(pTank);
+
+    TankAdapter* pTankAdapter = new TankAdapter();
+    pTankAdapter->SetWidth(13);
+    pTankAdapter->SetPos(10, groundY - 1);
+    vecStaticObj.push_back(pTankAdapter);
 
     House * pHouse = new House;
     pHouse->SetWidth(13);
@@ -221,6 +227,7 @@ vector<DestroyableGroundObject*> SBomber::FindDestoyableGroundObjects() const
 {
     vector<DestroyableGroundObject*> vec;
     Tank* pTank;
+    TankAdapter* pTankAdapter;
     House* pHouse;
     for (size_t i = 0; i < vecStaticObj.size(); i++)
     {
@@ -228,6 +235,13 @@ vector<DestroyableGroundObject*> SBomber::FindDestoyableGroundObjects() const
         if (pTank != nullptr)
         {
             vec.push_back(pTank);
+            continue;
+        }
+
+        pTankAdapter = dynamic_cast<TankAdapter*>(vecStaticObj[i]);
+        if (pTankAdapter != nullptr)
+        {
+            vec.push_back(pTankAdapter);
             continue;
         }
 
